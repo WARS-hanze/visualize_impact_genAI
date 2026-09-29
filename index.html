@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GenAI Footprint Ledger</title>
+<meta name="description" content="The global, whole-life-cycle environmental footprint of generative AI (CO₂e, water, electricity, materials), with every figure traced to a source.">
+<script>
+  // Apply a saved theme before first paint; "system" (the default) sets nothing.
+  try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161817" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="topbar" aria-label="Page">
+  <div class="wrap">
+    <a class="brand" href="#top">GenAI Footprint Ledger</a>
+    <div class="topnav">
+      <a href="#intro">The short version</a>
+      <a href="#deep">Deep dive</a>
+      <div class="seg" role="group" aria-label="Theme" data-group="theme">
+        <button type="button" data-value="system" aria-pressed="true">System</button>
+        <button type="button" data-value="light" aria-pressed="false">Light</button>
+        <button type="button" data-value="dark" aria-pressed="false">Dark</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead hero wrap" id="top">
+  <span class="eyebrow">Generative AI · whole world · one year</span>
+  <h1>What does generative AI cost the planet?</h1>
+  <p class="lede">Chatbots, image generators and coding assistants run on hardware in large data centres. Building that hardware and running it takes electricity, water and metals. Scroll to see what that added up to in 2024, one resource at a time.</p>
+  <a class="scroll-cue" href="#ch-lifecycle"><span>Start</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</header>
+
+<!-- ================= PART 1: THE SHORT VERSION (scroll story) ================= -->
+<div class="part story" id="intro">
+  <nav class="chapter-dots" id="chapter-dots" aria-label="Chapters"></nav>
+  <section class="chapter" id="ch-lifecycle" data-chapter="The whole life cycle" aria-labelledby="h-lifecycle">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">1 · The whole life cycle</span>
+        <h2 class="headline" id="h-lifecycle"></h2>
+        <p class="body" id="body-lifecycle"></p>
+        <p class="foot" id="foot-lifecycle"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto journey" id="viz-lifecycle" aria-hidden="true"></div>
+        <p class="picto-key" id="key-lifecycle"></p>
+        <div class="chart" id="chart-lifecycle"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-electricity" data-chapter="Electricity" aria-labelledby="h-electricity">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">2 · Electricity</span>
+        <p class="count"><span class="v" data-count="energy"></span><span class="unit">TWh</span></p>
+        <h2 class="headline" id="h-electricity"></h2>
+        <p class="body" id="body-electricity"></p>
+        
+        <p class="foot" id="foot-electricity"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto" id="viz-electricity" aria-hidden="true"></div><p class="picto-key" id="key-electricity"></p>
+        <div class="chart" id="chart-electricity"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-carbon" data-chapter="Carbon" aria-labelledby="h-carbon">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">3 · Carbon</span>
+        <p class="count"><span class="v" data-count="co2"></span><span class="unit">Mt CO₂e</span></p>
+        <h2 class="headline" id="h-carbon"></h2>
+        <p class="body" id="body-carbon"></p>
+        
+        <p class="foot" id="foot-carbon"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto" id="viz-carbon" aria-hidden="true"></div><p class="picto-key" id="key-carbon"></p>
+        <div class="chart" id="chart-carbon"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-water" data-chapter="Water" aria-labelledby="h-water">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">4 · Water</span>
+        <p class="count"><span class="v" data-count="water"></span><span class="unit">billion litres</span></p>
+        <h2 class="headline" id="h-water"></h2>
+        <p class="body" id="body-water"></p>
+        
+        <p class="foot" id="foot-water"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto" id="viz-water" aria-hidden="true"></div><p class="picto-key" id="key-water"></p>
+        <div class="chart" id="chart-water"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-hardware" data-chapter="Hardware" aria-labelledby="h-hardware">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">5 · Hardware</span>
+        <p class="count"><span class="v" data-count="ewaste"></span><span class="unit">thousand tonnes</span></p>
+        <h2 class="headline" id="h-hardware"></h2>
+        <p class="body" id="body-hardware"></p>
+        
+        <p class="foot" id="foot-hardware"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto" id="viz-hardware" aria-hidden="true"></div><p class="picto-key" id="key-hardware"></p>
+        <div class="chart" id="chart-hardware"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-world" data-chapter="Compared with the world" aria-labelledby="h-world-story">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">6 · Compared with the world</span>
+        <h2 class="headline" id="h-world-story"></h2>
+        <p class="body" id="body-world"></p>
+        <div class="seg" role="group" aria-label="Resource" data-group="storyWorld">
+          <button type="button" data-value="energy" aria-pressed="true">Electricity</button>
+          <button type="button" data-value="co2" aria-pressed="false">Emissions</button>
+        </div>
+        <p class="small muted">Water is not shown here: world water is only counted as water <i>taken</i>, while this page counts water <i>used up</i>, so the two cannot be compared fairly.</p>
+        <p class="foot" id="foot-world"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto cascade fade-swap" id="viz-world"></div>
+        <div class="legend" id="key-world"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-prompt" data-chapter="One request" aria-labelledby="h-prompt">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">7 · One request</span>
+        
+        <h2 class="headline" id="h-prompt"></h2>
+        <p class="body" id="body-prompt"></p>
+        
+        <p class="foot" id="foot-prompt"></p>
+      </div>
+      <div class="chapter-visual">
+        <div class="picto" id="viz-prompt" aria-hidden="true"></div><p class="picto-key" id="key-prompt"></p>
+        
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-growth" data-chapter="Growth" aria-labelledby="h-growth">
+    <div class="wrap chapter-grid">
+      <div class="chapter-text">
+        <span class="kicker">8 · Growth</span>
+        <p class="count"><span class="v" data-count="growth"></span><span class="unit">× by 2030</span></p>
+        <h2 class="headline" id="h-growth"></h2>
+        <p class="body" id="body-growth"></p>
+        
+        <p class="foot" id="foot-growth"></p>
+      </div>
+      <div class="chapter-visual">
+        
+        <div class="chart" id="chart-growth"></div>
+      </div>
+    </div>
+  </section>
+  <section class="chapter" id="ch-unknown" data-chapter="What we don't know" aria-labelledby="h-unknown">
+    <div class="wrap chapter-grid single">
+      <div class="chapter-text">
+        <span class="kicker">9 · What we don't know</span>
+        <h2 class="headline" id="h-unknown">These numbers are estimates, and the range is wide</h2>
+        <div class="unknowns">
+          <div><h3>How much AI hardware serves generative AI</h3><p>Companies don't publish it. We assume 60%, and every number here scales with it. <a href="#assumptions">Change it yourself</a>.</p></div>
+          <div><h3>Which power plants run it</h3><p>The same server emits several times more on a coal-heavy grid than on a clean one. Company figures often subtract renewable-energy certificates; ours do not.</p></div>
+          <div><h3>How fast it grows</h3><p>Projections for 2030 differ a lot. We follow the IEA's central case. <a href="#crosscheck">See how our numbers compare</a> with independent studies.</p></div>
+        </div>
+        <p class="body" id="range-note"></p>
+        <a class="scroll-cue" href="#deep"><span>Go to the deep dive</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= PART 2: DEEP DIVE ================= -->
+<div class="part deep" id="deep">
+  <header class="wrap part-head">
+    <span class="eyebrow">Part 2</span>
+    <h2 class="part-title">Deep dive</h2>
+    <p class="lede">The full calculation: every life-cycle stage, every assumption with its sources and confidence, and cross-checks against independent studies. Change the year, the accounting method or any assumption and everything updates.</p>
+  </header>
+<div class="controls" role="region" aria-label="Scenario controls">
+  <div class="wrap">
+    <div class="control">
+      <span class="eyebrow" id="lbl-year">Year</span>
+      <div class="seg" role="group" aria-labelledby="lbl-year" data-group="scenario">
+        <button type="button" data-value="y2024" aria-pressed="true">2024</button>
+        <button type="button" data-value="y2025" aria-pressed="false">2025</button>
+        <button type="button" data-value="y2030" aria-pressed="false">2030</button>
+      </div>
+    </div>
+    <div class="control">
+      <span class="eyebrow" id="lbl-mode">Hardware &amp; buildings</span>
+      <div class="seg" role="group" aria-labelledby="lbl-mode" data-group="mode">
+        <button type="button" data-value="amortised" aria-pressed="true" title="Spread over their lifetime, the usual life-cycle convention">Spread over life</button>
+        <button type="button" data-value="buildout" aria-pressed="false" title="Everything manufactured or built this year in a growing fleet">Built this year</button>
+      </div>
+    </div>
+    <button type="button" class="btn-quiet" id="reset" hidden>Reset assumptions</button>
+    <span class="scenario-note" id="scenario-note"></span>
+  </div>
+</div>
+
+<main>
+  <!-- Totals -->
+  <section id="totals" aria-labelledby="h-totals">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-totals">Generative AI in <span data-bind="year">2024</span></h2>
+        <p class="muted">No study measures generative AI's global footprint directly, so this page calculates it. It starts from the IEA's figure for all data-centre electricity, takes the share used by AI accelerator servers, then the share of that used for generative AI, and adds cooling, hardware manufacturing and buildings. <a href="#method">See the calculation</a>. The range moves every uncertain input to its extreme at the same time.</p>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <p class="caveat" id="totals-caveat"></p>
+    </div>
+  </section>
+
+  <!-- Life cycle -->
+  <section id="lifecycle" aria-labelledby="h-life">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">A → D</span>
+        <h2 id="h-life">Where in the life cycle the impact happens</h2>
+        <p class="muted">Eight stages in four phases. Hover a segment for its value; open a row below to see the calculation.</p>
+      </div>
+      <div class="phase-strip" id="phase-strip"></div>
+      <div class="panel">
+        <div class="stack-rows" id="stack-rows"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Stage by stage</h3>
+          <span class="small muted">Confidence per stage = its weakest input (the GenAI share is excluded because it scales every stage equally)</span>
+        </div>
+        <div class="table-scroll"><table id="stage-table"></table></div>
+      </div>
+      <div class="panel two-col">
+        <div class="stack">
+          <h3>Materials</h3>
+          <p class="small muted">Tonnes per year. Hardware mass becomes e-waste when retired. Copper goes into power distribution and cooling.</p>
+          <div class="chart" id="materials-chart"></div>
+        </div>
+        <div class="stack">
+          <h3>Scarcity-weighted view</h3>
+          <p class="small">Tonnes treat gold and steel alike. Life-cycle studies instead weight minerals by scarcity (abiotic depletion, kg Sb-eq). The only published LLM life-cycle study that does this is Mistral's. It found that <b>server manufacturing causes 61%</b> of Mistral Large 2's mineral depletion, versus 11% of its CO₂e and 5% of its water. Energy use accounts for 29%.</p>
+          <div class="chart" id="adp-chart"></div>
+          <p class="small muted">Source: <a href="#src-mistral2025">Mistral/ADEME LCA 2025</a>, from the infographic on Mistral's own page (the full report is not public). It covers one model on a low-carbon grid, so treat it as indicative. “Other” is mainly end-user devices (7% of minerals) and data-centre construction (1.5%); end-user devices are outside this page's scope. Manufacturing also dominates toxicity impacts (<a href="#src-a100lca2025">A100 LCA</a>: 99% of cancer-toxicity, 85% of metal depletion).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- World by sector -->
+  <section id="world" aria-labelledby="h-world">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">Share of the world</span>
+        <h2 id="h-world">Where the world's resources go</h2>
+        <p class="muted">Global totals split by sector, with data centres and generative AI placed inside the sector they belong to.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="seg" role="group" aria-label="Resource" data-group="worldMetric">
+            <button type="button" data-value="co2" aria-pressed="true">Emissions</button>
+            <button type="button" data-value="energy" aria-pressed="false">Electricity</button>
+            <button type="button" data-value="water" aria-pressed="false">Water</button>
+            <button type="button" data-value="ewaste" aria-pressed="false">E-waste</button>
+          </div>
+          <div class="seg" role="group" aria-label="Scale" data-group="worldScale">
+            <button type="button" data-value="linear" aria-pressed="true">Linear</button>
+            <button type="button" data-value="log" aria-pressed="false" title="Each gridline is ten times the previous one, so small values stay visible">Log scale</button>
+          </div>
+        </div>
+        <div class="fade-swap" id="world-wrap">
+          <h3 id="world-title"></h3>
+          <div class="chart" id="world-chart"></div>
+          <p class="caveat" id="world-caveat"></p>
+          <p class="small muted" id="world-share"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- In context -->
+  <section id="context" aria-labelledby="h-context">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">Side by side</span>
+        <h2 id="h-context">Compared with other technologies and places</h2>
+        <p class="muted">Year badges show which year each figure describes; <span class="year mismatch">amber</span> means it differs from the selected year. Switch to a log scale to see the small values: each gridline is then ten times the previous one.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="seg" role="group" aria-label="Metric" data-group="ctxMetric">
+            <button type="button" data-value="co2" aria-pressed="true">CO₂e</button>
+            <button type="button" data-value="energy" aria-pressed="false">Electricity</button>
+            <button type="button" data-value="water" aria-pressed="false">Water</button>
+            <button type="button" data-value="ewaste" aria-pressed="false">E-waste</button>
+            <button type="button" data-value="copper" aria-pressed="false">Copper</button>
+          </div>
+          <div class="seg" role="group" aria-label="Scale" data-group="ctxScale">
+            <button type="button" data-value="linear" aria-pressed="true">Linear</button>
+            <button type="button" data-value="log" aria-pressed="false" title="Each gridline is ten times the previous one">Log scale</button>
+          </div>
+        </div>
+        <div class="fade-swap" id="ctx-wrap">
+          <div class="chart" id="ctx-chart"></div>
+          <p class="small muted" id="ctx-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Applications -->
+  <section id="apps" aria-labelledby="h-apps">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">Per request</span>
+        <h2 id="h-apps">Which kinds of AI use the most energy</h2>
+        <p class="muted">No operator publishes how GenAI's total splits across chat, code, images or video. What exists are measured energy costs per request. Generating an image takes about 60 times as much energy as generating text, and around 1,000 times as much as classifying text.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="legend" id="apps-legend"></div>
+          <div class="seg" role="group" aria-label="Scale" data-group="appsScale">
+            <button type="button" data-value="linear" aria-pressed="true">Linear</button>
+            <button type="button" data-value="log" aria-pressed="false" title="Each gridline is ten times the previous one">Log scale</button>
+          </div>
+        </div>
+        <div class="chart" id="apps-chart"></div>
+        <p class="small muted">kWh per 1,000 requests. Lab benchmarks: <a href="#src-luccioni2024">Luccioni et al. 2024</a> (88 models on A100 GPUs, measured 2023). Production figure: <a href="#src-google2025">Google 2025</a> (median Gemini text prompt including idle capacity and cooling). The two methods differ, so compare within each group.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assumptions -->
+  <section id="assumptions" aria-labelledby="h-assump">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">Inputs</span>
+        <h2 id="h-assump">Assumptions you can change</h2>
+        <p class="muted">Each strip shows what independent sources report (dots; hollow = covers only part of the quantity), the low–high band used for ranges (shaded), and the value in use (line).</p>
+      </div>
+      <div class="assumptions" id="sliders"></div>
+      <h3 style="margin-top:1.5rem">Fixed inputs</h3>
+      <div class="assumptions" id="fixed"></div>
+    </div>
+  </section>
+
+  <!-- Cross-checks -->
+  <section id="crosscheck" aria-labelledby="h-cross">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">Cross-reference</span>
+        <h2 id="h-cross">Does it agree with independent estimates?</h2>
+        <p class="muted">This page's estimate is its own calculation, set out under “How it is calculated” below, not a figure from any single study. Here it is compared with independent studies that used different methods. Where a study covers all AI rather than only generative AI, the estimate is recalculated with the GenAI share set to 100%.</p>
+      </div>
+      <div class="panel"><div class="table-scroll"><table id="cross-table"></table></div></div>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section id="method" aria-labelledby="h-method">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="code">Method</span>
+        <h2 id="h-method">How it is calculated, and what is left out</h2>
+        <p class="muted">Sources are marked <span class="chip conf-high">Checked</span> when every figure used was matched against the original document, and carry † where a figure was taken second-hand. Where authors have a stake in the result (for example, a company reporting on its own products), it is stated.</p>
+      </div>
+      <div class="two-col">
+        <div class="prose">
+          <h3>Calculation chain</h3>
+          <ul>
+            <li>Data-centre electricity (IEA) × share on accelerated GPU/TPU servers (IEA) × generative-AI share of those servers gives GenAI's <b>IT electricity</b>.</li>
+            <li>× PUE adds cooling and facility overhead. × grid carbon intensity gives <b>operational CO₂e</b>.</li>
+            <li>IT electricity ÷ average draw per accelerator gives the <b>fleet size</b>. Fleet ÷ service life (or new units in a growing fleet) × embodied footprint per unit gives <b>hardware impacts</b>.</li>
+            <li>Facility electricity ÷ load factor gives <b>built capacity</b>. Capacity × embodied carbon and copper per MW, spread over 20 years, gives <b>building impacts</b>.</li>
+            <li>Water = on-site cooling (WUE) + power-plant water (per kWh) + chip-fab water per accelerator.</li>
+          </ul>
+          <h3>Left out</h3>
+          <ul>
+            <li>End-user devices and network transmission. Mistral found networks under 1%; devices are shared with everything else people do.</li>
+            <li>Generative AI running on phones and laptops, and on ordinary (non-accelerated) servers.</li>
+            <li>Data collection, labelling and staff.</li>
+            <li>Backup diesel generators, refrigerant leaks, and non-CO₂ effects.</li>
+            <li>Local water stress. A litre in a desert region matters more than a litre in a wet one.</li>
+            <li>Rebound effects and the emissions AI may help avoid elsewhere.</li>
+          </ul>
+        </div>
+        <div class="prose">
+          <h3>Confidence levels</h3>
+          <div class="definitions">
+            <span class="chip conf-high">High</span><span>Reported or modelled by at least two independent sources that cover the whole quantity.</span>
+            <span class="chip conf-medium">Medium</span><span>One full source, or derived here by simple arithmetic from sourced numbers.</span>
+            <span class="chip conf-low">Low</span><span>Expert estimate for this page, with no direct measurement. The reasoning is shown.</span>
+          </div>
+          <h3>Two ways to count hardware and buildings</h3>
+          <p class="small"><b>Spread over life</b> divides each server's and building's footprint by its lifetime, the usual convention in life-cycle studies. <b>Built this year</b> counts what is actually manufactured this year. In a fleet growing 30% a year, that is several times more.</p>
+          <h3>Ranges</h3>
+          <p class="small">The low and high figures move every uncertain input to its low-impact or high-impact end at the same time. That makes them a deliberately wide bracket, not a statistical confidence interval. Inputs you change with a slider stay fixed at your value.</p>
+          <h3>Data</h3>
+          <div class="control">
+            <button type="button" class="btn-quiet" id="dl-csv">Download results (CSV)</button>
+            <button type="button" class="btn-quiet" id="copy-json">Copy all inputs &amp; results (JSON)</button>
+            <span class="small muted" id="copy-status" role="status"></span>
+          </div>
+        </div>
+      </div>
+      <h3>Sources</h3>
+      <ul class="bib" id="bib"></ul>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Figures checked against their sources on 29 September 2026. Every input lives in <span class="mono">data/*.js</span> with the source and page it came from. Change it there and the whole page updates.</p>
+  </div>
+</footer>
+
+<script src="data/sources.js"></script>
+<script src="data/parameters.js"></script>
+<script src="data/comparators.js"></script>
+<script src="js/model.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/pictos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
